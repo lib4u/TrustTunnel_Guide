@@ -1,0 +1,28 @@
+[Unit]
+Description=TrustTunnel Endpoint
+Wants=network-online.target
+Requires=trusttunnel-site.service
+After=network-online.target trusttunnel-site.service
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/trusttunnel
+ExecStart=/opt/trusttunnel/trusttunnel_endpoint vpn.toml hosts.toml
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65536
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_NET_RAW
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LogNamespace=trusttunnel
+
+[Install]
+WantedBy=multi-user.target

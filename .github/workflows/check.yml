@@ -1,0 +1,20 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bash syntax and ShellCheck
+        run: |
+          bash -n install.sh server-install.sh lib/*.sh templates/renew-hook.sh
+          shellcheck -x install.sh server-install.sh lib/*.sh templates/renew-hook.sh
+      - name: Unit and terminal tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py' -v

@@ -1,0 +1,14 @@
+listen_address = "0.0.0.0:443"
+credentials_file = "credentials.toml"
+rules_file = "rules.toml"
+ipv6_available = false
+allow_private_network_connections = false
+auth_failure_status_code = 407
+
+[listen_protocols.http1]
+[listen_protocols.http2]
+[listen_protocols.quic]
+
+[reverse_proxy]
+server_address = "127.0.0.1:8081"
+path_mask = "/"

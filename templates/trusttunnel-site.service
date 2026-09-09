@@ -1,0 +1,20 @@
+[Unit]
+Description=TrustTunnel website (nginx)
+After=network.target
+
+[Service]
+Type=simple
+RuntimeDirectory=trusttunnel-site
+ExecStartPre=/usr/sbin/nginx -t -q -c /opt/trusttunnel/nginx.conf
+ExecStart=/usr/sbin/nginx -c /opt/trusttunnel/nginx.conf -g "daemon off;"
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=full
+LogNamespace=trusttunnel
+
+[Install]
+WantedBy=multi-user.target
